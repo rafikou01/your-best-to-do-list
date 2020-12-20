@@ -1,0 +1,43 @@
+<div class="body">
+  <div id="checklist">
+    <div class="grid listTasks">
+      <div *ngFor="let task of listTasks;let i = index" class="item"
+           [ngStyle]="{
+           'display': (filter === 'all')
+           || (filter === 'active' && !task.check)
+           || (filter === 'completed' && task.check)
+           ? 'grid' : 'none' }">
+        <input [id]="i" type="checkbox" (click)="toggleTask(i)" name="r{{i}}" [ngClass]="{'checked': task.check}">
+        <label [for]="i">{{task.text}}</label>
+        <span class="btn-remove" (click)="removeTask(i)">x</span>
+      </div>
+    </div>
+    <div class="grid">
+      <div class="newItem">
+        <input class="effect-5" type="text" (keyup.enter)="addTask()" [(ngModel)]="newTask"
+               placeholder="Ajouter une tâche">
+        <span class="focus-border"></span>
+        <span class="btn-add" *ngIf="newTask" (click)="addTask()">+</span>
+      </div>
+
+      <div class="btn-filters">
+        <div [ngClass]="{'button':true, 'active':(filter === 'all'), 'repos':(filter !== 'all')}"
+             (click)="filterList('all')"
+        ><span>Tout</span></div>
+        <div [ngClass]="{'button':true, 'active':(filter === 'active'), 'repos':(filter !== 'active')}"
+             (click)="filterList('active')"
+        ><span>Actif</span></div>
+        <div [ngClass]="{'button':true, 'active':(filter === 'completed'), 'repos':(filter !== 'completed')}"
+             (click)="filterList('completed')"
+        ><span>Terminé</span></div>
+        <div class="button delete"
+             (click)="removeAll()"
+        ><span>Supprimer tous</span></div>
+      </div>
+      <div [ngClass]="{'statItem':true, 'large':(listTasks.length > 11)}">
+        <span>Tâches Complétées: {{taskComplete}}/{{listTasks.length}}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
